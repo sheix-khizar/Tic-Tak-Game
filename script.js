@@ -6,15 +6,23 @@ const cells = document.querySelectorAll('.cell');
 const statusText = document.getElementById('statusText');
 const resetButton = document.getElementById('resetButton');
 
+const clickSound = document.getElementById('clickSound');
+const winSound = document.getElementById('winSound');
+const drawSound = document.getElementById('drawSound');
+
 function handleCellClick(event) {
     const cellIndex = event.target.id.split('-')[1];
     
     if (gameBoard[cellIndex] !== '' || gameOver) {
         return;
     }
-    
+
     gameBoard[cellIndex] = currentPlayer;
     event.target.textContent = currentPlayer;
+
+    // Play click sound
+    clickSound.play();
+
     checkForWinner();
     currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
     statusText.textContent = `Player ${currentPlayer}'s turn`;
@@ -37,6 +45,9 @@ function checkForWinner() {
         if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
             gameOver = true;
             statusText.textContent = `Player ${gameBoard[a]} wins!`;
+            
+            // Play win sound
+            winSound.play();
             return;
         }
     }
@@ -44,6 +55,9 @@ function checkForWinner() {
     if (!gameBoard.includes('')) {
         gameOver = true;
         statusText.textContent = "It's a draw!";
+        
+        // Play draw sound
+        drawSound.play();
     }
 }
 
